@@ -14,13 +14,14 @@ typedef struct
 	char tnome[30];
 	int i;
 	int tam;
+	Pessoa auxnome;
 
 } Menu;
 
 struct elemento
 {
 	struct elemento *ant;
-	Pessoa* dados;
+	Pessoa dados;
 	struct elemento *prox;
 	
 }; //a lista duplamente encadeada
@@ -47,15 +48,15 @@ int copiar(Lista* li, Fila* fila);
 void libera_lista(Lista* li);
 int tamanho_lista(Lista* li);
 int lista_vazia(Lista* li);
-int insere_lista_inicio(Lista* li, Pessoa* p);
-int insere_lista_meio(Lista* li, Pessoa* p);
+int insere_lista_inicio(Lista* li, void* pbuffer);
+int insere_lista_meio(Lista* li, void* pbuffer);
 int remove_lista(Lista * li, char* nome);
-int consulta_lista_pos(Lista* li, int pos, Pessoa* p);
-int consulta_nome(Lista* li, char* nome, Pessoa* p);
+int consulta_lista_pos(Lista* li, int pos, void* pbuffer);
+int consulta_nome(Lista* li, char* nome, void* pbuffer);
 void imprime_nome(Lista* li);
 //-------- Função da fila ------
 int pop(Lista * li); //remove do começo da fila
-int push(Lista* li, Pessoa* p); //insere no final da fila
+int push(Lista* li, void* pbuffer); //insere no final da fila
 void ordemCrescente(Fila* fila, int n);
 void ordemDecrescente(Fila* fila, int n);
 

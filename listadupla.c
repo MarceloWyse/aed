@@ -62,13 +62,16 @@ int lista_vazia(Lista* li)
 	return 0; //se não for nulo ela retorna 0
 }
 
-int insere_lista_inicio(Lista* li, Pessoa* p)
+int insere_lista_inicio(Lista* li, void* pbuffer)
 {
+	Menu* menu;
+	menu = pbuffer;
+	 
 	if(li == NULL) return 0; //não posso inserir se a lista não foi criada/alocada anteriormente
 
 	Elem* no = (Elem*) malloc(sizeof(Elem)); //se passou do if eu tenho a lista, então aloco um no auxiliar
 	if(no == NULL) return 0; //deu erro ao alocar espaço
-	no->dados = p;
+	no->dados = menu->auxnome;
 	no-> prox = *li; //esse no vai ter como seguinte o primeiro nó da lista, pq estou no começo da lista
 	no->ant = NULL; //o anterior é nulo porque não tem ninguém antes dele
 
@@ -81,14 +84,17 @@ int insere_lista_inicio(Lista* li, Pessoa* p)
 	return 1;
 }
 
-int push(Lista* li, Pessoa* p)
+int push(Lista* li, void* pbuffer)
 {
 
+	Menu* menu;
+	menu = pbuffer;
+	
 	if(li == NULL) return 0; //não posso inserir numa lista que não foi alocada
 
 	Elem* no = (Elem*) malloc(sizeof(Elem));
 	if(no == NULL) return 0; //erro na alocação do no
-	no->dados = p; //copio os dados da minha struct
+	no->dados = menu->auxnome; //copio os dados da minha struct
 	no->prox = NULL; //porque não terá nada depois dele
 
 	if(*li == NULL) //se por acaso for o começo da listaq
@@ -112,14 +118,17 @@ int push(Lista* li, Pessoa* p)
 
 }
 
-int insere_lista_meio(Lista* li, Pessoa* p)
+int insere_lista_meio(Lista* li, void* pbuffer)
 {
+	Menu* menu;
+	menu = pbuffer;
+	
 	if(li == NULL) return 0; //lista nem existe, não posso alocar nada
 	//if falhou, então ela existe, posso colocar meu no.
 	Elem* no = (Elem*) malloc(sizeof(Elem));
 	if(no == NULL) return 0; //deu erro ao alocar o nó
 
-	no->dados = p; //se o no alocou memoria ele copia para si os dados de p
+	no->dados = menu->auxnome; //se o no alocou memoria ele copia para si os dados de p
 
 	if(*li == NULL) //caso a lista passada esteja vazia
 	{
@@ -132,7 +141,7 @@ int insere_lista_meio(Lista* li, Pessoa* p)
 	else //não é uma lista vazia, vou ter que procurar onde inserir
 	{
 		Elem *anterior, *atual = *li; //crio dois nós auxiliares, sendo que o atual recebe o começo da lista
-		while(atual != NULL && strcmp(atual->dados->nome, p->nome) < 0)
+		while(atual != NULL && strcmp(atual->dados.nome, menu->tnome) < 0)
 		{
 			//percorro a lista enquanto o nome atual for menor que o nome passado, ou chegar no final da lista
 			anterior = atual;
@@ -165,7 +174,7 @@ int remove_lista(Lista * li, char* nome)
 {
 	if(li == NULL) return 0;
 	Elem* no = *li;
-	while(no != NULL && strcmp(no->dados->nome, nome) != 0)
+	while(no != NULL && strcmp(no->dados.nome, nome) != 0)
 	{
 		no = no->prox; //percorre a lista
 
@@ -204,33 +213,33 @@ int pop(Lista * li) //remove do começo da fila
 	return 1;
 }
 
-int consulta_lista_pos(Lista * li, int pos, Pessoa* p)
-{
-	if(li == NULL || pos <= 0) return 0;
-	Elem* no = *li;
-	int i = 1;
-	while(no != NULL && i < pos)
-	{
-		no = no->prox;
-		i++;
-	}
-	if(no == NULL) return 0;
-	else
-	{
-		p = no->dados;
+// int consulta_lista_pos(Lista * li, int pos, void* pbuffer)
+// {
+// 	if(li == NULL || pos <= 0) return 0;
+// 	Elem* no = *li;
+// 	int i = 1;
+// 	while(no != NULL && i < pos)
+// 	{
+// 		no = no->prox;
+// 		i++;
+// 	}
+// 	if(no == NULL) return 0;
+// 	else
+// 	{
+// 		p = no->dados;
+// 
+// 		return 1;
+// 	}
+// }
 
-		return 1;
-	}
-}
-
-int consulta_nome(Lista* li, char* nome, Pessoa* p)
+int consulta_nome(Lista* li, char* nome, void* pbuffer)
 {
 
 	if(li == NULL) return 0;
 	if(*li == NULL) return 0;
 	Elem* no = *li;
 	int i = 1;
-	while(no != NULL && strcmp(nome, no->dados->nome) != 0)
+	while(no != NULL && strcmp(nome, no->dados.nome) != 0)
 	{
 		i++;
 		no = no->prox;
@@ -242,7 +251,7 @@ int consulta_nome(Lista* li, char* nome, Pessoa* p)
 	}
 	else
 	{
-		printf("Nome: %s, posição: %d\n", no->dados->nome, i);
+		printf("Nome: %s, posição: %d\n", no->dados.nome, i);
 		return 1;
 	}
 }
@@ -255,38 +264,12 @@ void imprime_nome(Lista* li)
 	int i = 1;
 	while(no != NULL)
 	{
-		printf("Nome:%s, posição: %d\n", no->dados->nome, i);
+		printf("Nome:%s, posição: %d\n", no->dados.nome, i);
 		no = no->prox;
 		i++;
 	}
 }
 
-// void crescente(Lista* li, Fila* fila)
-// {
-// 	Elem* no = *li;
-//
-// 	Elem* aux = malloc(sizeof(Elem));
-// 	Elem* aux2 = malloc(sizeof(Elem));
-//
-// 	aux = no->prox;
-//
-// 	while(no != NULL)
-// 	{
-// 		if(strcmp(aux->dados->nome, no->dados->nome) < 0)
-// 		{
-// 			strcpy(aux2->dados->nome, no->dados->nome);
-// 			push()
-// 		}
-// 		no = no->prox;
-// 	}
-//
-//
-// }
-
-// void decrescente(Lista* li, Fila* fila)
-// {
-//
-// }
 
 int copiar(Lista* li, Fila* fila)
 {
@@ -298,7 +281,7 @@ int copiar(Lista* li, Fila* fila)
 
 	while(no != NULL)
 	{
-		strcpy(fila[i].nomef, no->dados->nome);
+		strcpy(fila[i].nomef, no->dados.nome);
 		no = no->prox;
 		i++;
 	}

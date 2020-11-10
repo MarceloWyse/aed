@@ -14,9 +14,9 @@ int main()
 	menu = pbuffer;
 	menu->tam = 0;
 	
-	Pessoa* pessoa = malloc(sizeof(Pessoa));
+	// Pessoa* pessoa = malloc(sizeof(Pessoa));
 
-	menu->cont = 2;
+	menu->cont = 0;
 	Lista *li; //crio um ponteiro para ponteiro, pois Lista já é um ponteiro
 	li = cria_lista(); //recebe o ponteiro de ponteiro, aponta para o endereço do primeiro nó da lista
 	
@@ -38,16 +38,14 @@ int main()
 
 		if(menu->choice == 1)
 		{
-			if(menu->cont == 2)
+			if(menu->cont == 0)
 			{
 				printf("Qual nome deseja inserir? ");
-				scanf("%s", menu->tnome);
-				strcpy(pessoa->nome, menu->tnome);
+				scanf("%s", menu->auxnome.nome);
 
-				if(insere_lista_inicio(li, pessoa) == 1)
+				if(insere_lista_inicio(li, menu) == 1)
 				{
 					printf("Nome inserido com sucesso\n");
-					pessoa++;
 					  
 				}
 				else
@@ -59,28 +57,24 @@ int main()
 			else
 			{
 				printf("Qual nome deseja inserir?\n");
-				scanf("%s", menu->tnome);
-				strcpy(pessoa->nome, menu->tnome);
+				scanf("%s", menu->auxnome.nome);
 				
 				printf("Em qual parte da lista deseja inserir? Inicio(1), Meio(2), Fim(3)\n");
 				scanf("%d", &menu->choice);
 				if(menu->choice == 1)
 				{
-					insere_lista_inicio(li, pessoa);
-					pessoa++;
+					insere_lista_inicio(li, menu);
 
 				}
 				else if(menu->choice == 2)
 				{
-					insere_lista_meio(li, pessoa);
-					pessoa++;
+					insere_lista_meio(li, menu);
 
 					  
 				}
 				else if(menu-> choice == 3)
 				{
-					push(li, pessoa);
-					pessoa++;
+					push(li, menu);
 				
 				}
 				else
@@ -90,7 +84,6 @@ int main()
 			}
 
 			menu->cont++;
-			pessoa = (Pessoa*) malloc(sizeof(Pessoa) * menu->cont);
 		}
 
 		else if(menu->choice == 2)
@@ -159,7 +152,7 @@ int main()
 
 				scanf("%s", menu->tnome);
 
-				if(consulta_nome(li, menu->tnome, pessoa) == 1)
+				if(consulta_nome(li, menu->tnome, menu) == 1)
 				{
 					printf("O nome: %s consta na lista\n", menu->tnome);
 				}
@@ -176,7 +169,6 @@ int main()
 		{
 			printf("Saindo...\n");
 			free(pbuffer);
-			free(pessoa);
 			libera_lista(li);
 			free(fila);
 			
